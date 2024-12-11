@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta Mejorada</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #cce7ff;
+            font-family: Arial, sans-serif;
+        }
+        .ruleta-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+        }
+        .ruleta {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid #ffffff;
+            background: conic-gradient(
+                #ffcc00 0% 10%,
+                #87ceeb 10% 20%,
+                #ffa07a 20% 30%,
+                #98fb98 30% 40%,
+                #dda0dd 40% 50%,
+                #ffcc00 50% 60%,
+                #87ceeb 60% 70%,
+                #ffa07a 70% 80%,
+                #98fb98 80% 90%,
+                #dda0dd 90% 100%
+            );
+            transform: rotate(0deg);
+            transition: transform 3s ease-out;
+        }
+        .puntero {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #000000;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .numeros {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .numeros div {
+            position: absolute;
+            font-size: 18px;
+            font-weight: bold;
+            transform-origin: 50% 120%; /* Ajuste para centrar los números */
+            color: #333;
+        }
+        .resultado {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="ruleta-container">
+        <div class="ruleta" id="ruleta">
+            <div class="numeros" id="numeros">
+                <div style="transform: rotate(18deg) translateY(-140px);">1</div>
+                <div style="transform: rotate(54deg) translateY(-140px);">2</div>
+                <div style="transform: rotate(90deg) translateY(-140px);">3</div>
+                <div style="transform: rotate(126deg) translateY(-140px);">4</div>
+                <div style="transform: rotate(162deg) translateY(-140px);">5</div>
+                <div style="transform: rotate(198deg) translateY(-140px);">6</div>
+                <div style="transform: rotate(234deg) translateY(-140px);">7</div>
+                <div style="transform: rotate(270deg) translateY(-140px);">8</div>
+                <div style="transform: rotate(306deg) translateY(-140px);">9</div>
+                <div style="transform: rotate(342deg) translateY(-140px);">10</div>
+            </div>
+        </div>
+        <div class="puntero"></div>
+    </div>
+    <button id="boton-girar">Girar</button>
+    <div class="resultado" id="resultado">Resultado: </div>
+
+    <script>
+        const ruleta = document.getElementById('ruleta');
+        const botonGirar = document.getElementById('boton-girar');
+        const resultado = document.getElementById('resultado');
+
+        const numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Números en la ruleta
+        const gradosPorSegmento = 360 / numeros.length;
+
+        let numeroFijo = 7; // Número fijo establecido en el código
+
+        botonGirar.addEventListener('click', () => {
+            // Usar el número fijo
+            const numeroElegido = numeroFijo;
+
+            // Calcular la rotación necesaria
+            const indiceNumero = numeros.indexOf(numeroElegido);
+            const rotacionElegida = (360 - (indiceNumero + 0.5) * gradosPorSegmento) % 360; // Ajuste de 0.5 para centrar
+            const girosCompletos = 5 * 360; // Giros completos antes de frenar
+            const nuevaRotacion = girosCompletos + rotacionElegida;
+
+            // Aplicar rotación
+            ruleta.style.transform = `rotate(${nuevaRotacion}deg)`;
+
+            // Mostrar resultado después de la animación
+            setTimeout(() => {
+                resultado.textContent = `Resultado: ${numeroElegido}`;
+            }, 3000); // 3 segundos para coincidir con la animación
+        });
+    </script>
+</body>
+</html>
